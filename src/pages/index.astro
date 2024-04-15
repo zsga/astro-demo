@@ -1,9 +1,81 @@
 ---
-import Layout from "@/layouts/Layout.astro";
+import PageLayout from '../layouts/BaseLayout.astro'
+import Section from '../components/Section.astro'
+import Card from '../components/Card.astro'
+import ProjectCard from '../components/ProjectCard.astro'
+import Label from '../components/Label.astro'
+import SkillLayout from '../components/SkillLayout.astro'
+import PostPreview from '@/components/blog/PostPreview.astro'
 
-const title = "Home";
+import { Image } from 'astro:assets'
+import astro from '../assets/about-astro.png'
+
+import { getAllPosts, sortMDByDate } from '@/utils'
+
+const languages = ['python', 'rust', 'golang']
+const frontend = ['astro', 'react', 'vue']
+const backend = ['flask', 'fastapi', 'gin', 'mysql']
+const others = ['linux', 'neovim', 'vscode', 'alacritty', 'zellij']
+
+const MAX_POSTS = 10
+const allPosts = await getAllPosts()
+const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
 ---
 
-<Layout {title}>
-  <h1>My Astro Site</h1>
-</Layout>
+<PageLayout meta={{ title: '' }}>
+	<div class='flex w-full flex-col gap-y-10'>
+		<section class='flex flex-col items-center gap-y-7'>
+			<Image
+				src={astro}
+				alt='profile photo'
+				class='h-28 w-auto rounded-full bg-[#FFBE98] p-2'
+				loading='eager'
+			/>
+
+			<div class='flex flex-col items-center gap-y-4'>
+				<h1 class='text-3xl font-bold'>GaoAh</h1>
+				<div class='flex flex-wrap justify-center gap-x-7 gap-y-3'>
+				</div>
+			</div>
+		</section>
+
+		<Section title='About'>
+			<p class='text-muted-foreground'>
+				我是阿高，目前还是一名开发者，这里是我的个人网站，将会分享一些技术文章，还有折腾各种东西的记录。
+			</p>
+		</Section>
+		{
+			allPostsByDate.length > 0 && (
+				<Section title='Posts'>
+					<ul class='flex flex-col gap-y-2'>
+						{allPostsByDate.map((p) => (
+							<li class='flex flex-col gap-x-2 sm:flex-row'>
+								<PostPreview post={p} />
+							</li>
+						))}
+					</ul>
+				</Section>
+			)
+		}
+
+		<!-- <Section title='Projects'>
+			<div class='flex flex-col gap-y-3 sm:flex-row sm:gap-x-3 sm:gap-y-0'>
+				<ProjectCard
+					href='https://www.google.com'
+					heading='Consectetur'
+					subheading='Lorem ipsum dolor sit amet consectetur adipisicing elit.'
+					imagePath='/src/assets/coming-soon.png'
+					altText='Example'
+					class='w-full sm:w-1/2'
+				/>
+			</div>
+		</Section> -->
+
+		<Section title='Skills'>
+			<SkillLayout title='Languages' skills={languages} />
+			<SkillLayout title='Frontend' skills={frontend} />
+			<SkillLayout title='Backend' skills={backend} />
+			<SkillLayout title='Others' skills={others} />
+		</Section>
+	</div>
+</PageLayout>
