@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
+/* @font-face {
   font-family: 'Satoshi';
   src: url('/fonts/Satoshi-Variable.ttf');
   font-style: normal;
@@ -14,7 +14,7 @@
   src: url('/fonts/Satoshi-VariableItalic.ttf');
   font-style: italic;
   font-display: swap;
-}
+} */
 
 @layer base {
   :root {
